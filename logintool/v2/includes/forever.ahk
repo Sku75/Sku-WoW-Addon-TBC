@@ -1355,16 +1355,66 @@ FvBuild(s, screen) {
         skip := Map()
         for key in ["back", "customize", "preview", "hd_models"]
             skip[FvNorm(FvS(key))] := true
-        ; Class bar: up to two rows of icons at the bottom centre, names
-        ; under the icons (seen live: rows at 167 and 52 units above the
-        ; bottom edge).
+        ; Class bar: icons in a grid at the bottom centre, names under the
+        ; icons. UpdateClassButtons (Camelot/Blizzard_CharacterCreate.lua)
+        ; uses one row when the bar fits, else 2 rows, else 3 rows with
+        ; scaled-down icons (66 icon + 50 name = 116 units a row at scale 1).
+        ; Seen live: 2 rows at 167 and 52 units above the bottom edge; on a
+        ; 1024x768 screen 3 rows, the top one ~270 units up - the old
+        ; 220-unit band lost warrior, hunter and mage there. The band now
+        ; reaches 340 units, and the frame is at most 900 units wide.
+        cands := []
         for line in s["lines"] {
-            if (FvCy(line) < H - 220 * k || FvCx(line) < W * 0.25 || FvCx(line) > W * 0.75)
+            if (FvCy(line) < H - 340 * k || FvCx(line) < W * 0.25 || FvCx(line) > W * 0.75
+                    || Abs(FvCx(line) - W / 2) > 450 * k)
                 continue
             if (line["h"] > H * 0.04 || skip.Has(FvNorm(line["text"])))
                 continue
-            FvT(t, line["text"], FvCx(line), line["y"] - 36 * k, "class")
+            cands.Push(line)
         }
+        ; The race and faction text on the right reaches down into the band
+        ; on narrow screens (seen live at 1024x768: "gewesel", "auskenn").
+        ; Group the names into rows: a class row has two names or more, one
+        ; icon apart (66 units + spacing, scaled; never under 40). The grid
+        ; fills top left to bottom right, so only its last row can hold one
+        ; name, and that one sits under the first name of the row above.
+        FvSort(cands, (a, b) => FvCy(a) < FvCy(b))
+        rowsC := []
+        for line in cands {
+            if (rowsC.Length && Abs(FvCy(line) - FvCy(rowsC[rowsC.Length][1])) <= 10 * k)
+                rowsC[rowsC.Length].Push(line)
+            else
+                rowsC.Push([line])
+        }
+        for row in rowsC
+            FvSort(row, (a, b) => FvCx(a) < FvCx(b))
+        keep := []
+        for i, row in rowsC {
+            grid := true
+            loop row.Length - 1
+                if (FvCx(row[A_Index + 1]) - FvCx(row[A_Index]) < 40 * k)
+                    grid := false
+            if (!grid) {
+                for line in row
+                    Log("Forever: not a class name '" line["text"] "' @" Round(FvCx(line)) "," Round(FvCy(line)))
+                continue
+            }
+            if (row.Length >= 2 || rowsC.Length = 1) {
+                keep.Push(row)
+                continue
+            }
+            ; single name: only as the grid's last row, under the first
+            ; name of the class row above it
+            if (i = rowsC.Length && keep.Length
+                    && Abs(FvCx(row[1]) - FvCx(keep[keep.Length][1])) <= 20 * k)
+                keep.Push(row)
+            else
+                Log("Forever: not a class name '" row[1]["text"] "' @" Round(FvCx(row[1])) "," Round(FvCy(row[1])))
+        }
+        ; in the game's order: row by row, left to right
+        for row in keep
+            for line in row
+                FvT(t, line["text"], FvCx(line), line["y"] - 36 * k, "class")
         l := FvFind(s, "hd_models")
         if (l = "")
             l := FvFindStart(s, "hd_models")
